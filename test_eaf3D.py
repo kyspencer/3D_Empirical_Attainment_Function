@@ -25,8 +25,9 @@ class EAF3DTransformTests(unittest.TestCase):
         self.eaf_maker = eaf3D.EAF_3D(sets)
 
     def test_ensure_setUp_worked(self):
-        self.assertEqual(self.eaf_maker.lstar[0].root.point.x, 3)
-        self.assertAlmostEqual(self.eaf_maker.lstar[0].root.point.y, 22.59977497)
+        self.assertEqual(self.eaf_maker.lstar[0].root.point.x, 4)
+        self.assertAlmostEqual(self.eaf_maker.lstar[0].root.point.y, 12.67, 
+                               places=2)
 
     def test_transform(self):
         self.eaf_maker.transform()
@@ -34,17 +35,17 @@ class EAF3DTransformTests(unittest.TestCase):
             self.check_node_balances(self.eaf_maker.lstar[i])
 
     def test_find_attainment_point(self):
-        # p will be point at (4, 15.42, 6131.4) from set 3
+        # p will be point at (5, 10.42, 6113.4) from set 0
         p = self.eaf_maker.qstack.pop()
         j = p.input_set()
         # q will be point at (-inf, inf, -inf)
         q = self.eaf_maker.xstar[j].floor_x(p)
-        # Here, t=0, so only one while loop encountering r at (3, 22.6, 6131),
-        # resulting in new point s[0] at (4, 22.6, 6131)
+        # Here, t=0, so only one while loop encountering r at (4, 12.67, 6113),
+        # whose y-value is bigger than p's, so s will be a sentinel
         t, tmin = self.eaf_maker.tmax, 0
         s, tmin = self.eaf_maker.find_attainment_point(p, q, t, tmin)
-        self.assertEqual(s[0].x, 4)
-        self.assertAlmostEqual(s[0].y, 22.59977497)
+        self.assertEqual(s[0].x, self.eaf_maker.p1.x)
+        self.assertEqual(s[0].y, self.eaf_maker.p1.y)
         self.assertEqual(tmin, 0)
 
     def test_compare_p_to_surfaces(self):

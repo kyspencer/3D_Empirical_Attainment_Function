@@ -155,10 +155,11 @@ class EAF_3D:
         v = self.lstar[t].floor_x(u)
         if u.y < v.y:
             omegas = self.lstar[t].list_nodes_domxy(u)
-            for w in range(len(omegas)):
-                if u.z > omegas[w].point.z:
-                    self.lsa[t].append(omegas[w].point)
-                self.lstar[t].remove_node(omegas[w])
+            while omegas:
+                if u.z > omegas[0].point.z:
+                    self.lsa[t].append(omegas[0].point)
+                self.lstar[t].remove_node(omegas[0])
+                omegas = self.lstar[t].list_nodes_domxy(u)
             self.lstar[t].insert(u)
 
     def submit_to_xstar(self, u, j):
@@ -166,8 +167,9 @@ class EAF_3D:
         v = self.xstar[j].floor_x(u)
         if u.y < v.y:
             omegas = self.xstar[j].list_nodes_domxy(u)
-            for w in range(len(omegas)):
-                self.xstar[j].remove_node(omegas[w])
+            while omegas:
+                self.xstar[j].remove_node(omegas[0])
+                omegas = self.xstar[j].list_nodes_domxy(u)
             self.xstar[j].insert(u)
 
     def fill_attainment_surfaces(self):
