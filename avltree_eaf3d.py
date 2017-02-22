@@ -264,13 +264,13 @@ class AVLTree:
         if pivot.balance < 0:
             newroot = pivot.rotateLeftThenRight()
             pivot.balance = self.recalculate_balance(pivot)
-            newroot.balance = self.recalculate_balance(newroot)
             newroot.left.balance = self.recalculate_balance(newroot.left)
+            newroot.balance = self.recalculate_balance(newroot)
         else:
             newroot = pivot.rotateRightThenLeft()
             pivot.balance = self.recalculate_balance(pivot)
-            newroot.balance = self.recalculate_balance(newroot)
             newroot.right.balance = self.recalculate_balance(newroot.right)
+            newroot.balance = self.recalculate_balance(newroot)
         self.reconnect_subtree(theStack, pivot, newroot)
 
     def delete1(self, theStack, pivot, node):
@@ -547,9 +547,12 @@ class AVLTree:
         self.root = root_node
         self.count += 1
 
-    def print_astree(self):
+    def print_astree(self, root=None):
         print('There are ' + str(self.count) + ' nodes in the AVL tree.\n')
-        leaves = [self.root]
+        if root:
+            leaves = [root]
+        else:
+            leaves = [self.root]
         while any(leaves):
             # Make level string
             st = ' '
