@@ -534,7 +534,7 @@ class AVLTree:
         while node:
             height += 1
             # If balance is -1, the longer branch is on the left
-            if node.balance == -1:
+            if node.balance < 0:
                 node = node.left
             # If balance is 1, the longer branch is on the right
             # If balance is 0, it doesn't matter which branch you use.
