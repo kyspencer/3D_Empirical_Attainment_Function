@@ -26,6 +26,7 @@
 
 """
 
+from __future__ import print_function
 import numpy as np
 from stack import Stack
 
@@ -187,18 +188,19 @@ class AVLTree:
         # value reaches 2, a left rotation is required to rebalance the tree.
         # If it reaches -2, then a right rotation is required. These rotations
         # may cascade all the way up the path to the root of the tree.
-        child = node
+        # child = node
         while not theStack.isEmpty():
             parent = theStack.pop()
-            if child.point.x <= parent.point.x:
-                parent.balance += 1
-            else:
-                parent.balance -= 1
+            # if child.point.x <= parent.point.x:
+            #     parent.balance += 1
+            # else:
+            #     parent.balance -= 1
+            parent.balance = self.recalculate_balance(parent)
             if parent.balance == -2 or parent.balance == 2:
-                if self.height(parent) == 3:
-                    if parent.balance == -2 and parent.left.balance < 0:
+                if self.height(parent) >= 3:
+                    if parent.balance == -2 and parent.left.balance <= 0:
                         self.subcaseA(theStack, parent)
-                    elif parent.balance == 2 and parent.right.balance > 0:
+                    elif parent.balance == 2 and parent.right.balance >= 0:
                         self.subcaseA(theStack, parent)
                     else:
                         self.subcaseB(theStack, parent)

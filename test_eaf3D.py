@@ -108,6 +108,7 @@ class EAF3DTransformTests(unittest.TestCase):
                 if leaves[f]:
                     correct_balance = tree.recalculate_balance(leaves[f])
                     self.assertEqual(leaves[f].balance, correct_balance)
+                    self.assertLessEqual(abs(leaves[f].balance), 1)
             leaves = tree.next_tree_row(leaves)
 
 
